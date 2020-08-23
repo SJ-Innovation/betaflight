@@ -188,12 +188,8 @@ void pwmCompleteDshotMotorUpdate(void)
     }
 }
 
-#if defined(STM32F3)
-CCM_CODE
-#else
-FAST_CODE
-#endif
-static void motor_DMA_IRQHandler(dmaChannelDescriptor_t *descriptor)
+
+static FAST_CODE void motor_DMA_IRQHandler(dmaChannelDescriptor_t *descriptor)
 {
     if (DMA_GET_FLAG_STATUS(descriptor, DMA_IT_TCIF)) {
         motorDmaOutput_t * const motor = &dmaMotors[descriptor->userParam];
