@@ -164,6 +164,9 @@
 #define FAST_CODE_NOINLINE
 #endif
 
+#define FLASH_CODE              __attribute__((section(".text")))
+#define SLOW_CODE               FLASH_CODE
+
 #ifdef USE_FAST_DATA
 #define FAST_DATA_ZERO_INIT             __attribute__ ((section(".fastram_bss"), aligned(4)))
 #define FAST_DATA                    __attribute__ ((section(".fastram_data"), aligned(4)))
