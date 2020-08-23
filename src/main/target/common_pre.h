@@ -147,25 +147,27 @@
 #define DEFAULT_CPU_OVERCLOCK 0
 #endif
 
+#define O_FAST __attribute__((optimize("Ofast")))
+#define O_SIZE __attribute__((optimize("Os")))
+
 #if defined(USE_ITCM) && defined(USE_CCM)
 #error "ITCM and CCM are mutually exclusive. F3 has Instruction CCM, F7 has ITCM. F4 CCM is data only."
 #endif
 
 #if defined(USE_ITCM)
-#define TCM_CODE                    __attribute__((section(".tcm_code")))
-#define FAST_CODE 					TCM_CODE 
-#define FAST_CODE_NOINLINE          NOINLINE
+#define TCM_CODE                __attribute__((section(".tcm_code")))
+#define FAST_CODE               O_FAST TCM_CODE
 #elif defined(USE_CCM)
-#define CCM_CODE                    __attribute__((section(".ccm_code")))
-#define FAST_CODE					CCM_CODE
-#define FAST_CODE_NOINLINE          NOINLINE
+#define CCM_CODE                __attribute__((section(".ccm_code")))
+#define FAST_CODE               O_FAST CCM_CODE
 #else
-#define FAST_CODE
-#define FAST_CODE_NOINLINE
+#define FAST_CODE               O_FAST
 #endif
 
+#define FAST_CODE_NOINLINE      FAST_CODE NOINLINE
+
 #define FLASH_CODE              __attribute__((section(".text")))
-#define SLOW_CODE               FLASH_CODE
+#define SLOW_CODE               O_SIZE FLASH_CODE
 
 #ifdef USE_FAST_DATA
 #define FAST_DATA_ZERO_INIT             __attribute__ ((section(".fastram_bss"), aligned(4)))
