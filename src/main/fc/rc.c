@@ -392,7 +392,7 @@ uint16_t getCurrentRxRefreshRate(void)
 #ifdef USE_RC_SMOOTHING_FILTER
 // Determine a cutoff frequency based on filter type and the calculated
 // average rx frame time
-FAST_CODE_NOINLINE int calcRcSmoothingCutoff(int avgRxFrameTimeUs, bool pt1, uint8_t autoSmoothnessFactor)
+O_FAST FLASH_CODE int calcRcSmoothingCutoff(int avgRxFrameTimeUs, bool pt1, uint8_t autoSmoothnessFactor)
 {
     if (avgRxFrameTimeUs > 0) {
         const float cutoffFactor = (100 - autoSmoothnessFactor) / 100.0f;
@@ -417,7 +417,7 @@ static FAST_CODE bool rcSmoothingRxRateValid(int currentRxRefreshRate)
 
 // Initialize or update the filters base on either the manually selected cutoff, or
 // the auto-calculated cutoff frequency based on detected rx frame rate.
-FAST_CODE_NOINLINE void rcSmoothingSetFilterCutoffs(rcSmoothingFilter_t *smoothingData)
+O_FAST FLASH_CODE void rcSmoothingSetFilterCutoffs(rcSmoothingFilter_t *smoothingData)
 {
     const float dT = targetPidLooptime * 1e-6f;
     uint16_t oldCutoff = smoothingData->inputCutoffFrequency;
@@ -469,7 +469,7 @@ FAST_CODE_NOINLINE void rcSmoothingSetFilterCutoffs(rcSmoothingFilter_t *smoothi
     }
 }
 
-FAST_CODE_NOINLINE void rcSmoothingResetAccumulation(rcSmoothingFilter_t *smoothingData)
+O_FAST FLASH_CODE void rcSmoothingResetAccumulation(rcSmoothingFilter_t *smoothingData)
 {
     smoothingData->training.sum = 0;
     smoothingData->training.count = 0;
@@ -499,7 +499,7 @@ static FAST_CODE bool rcSmoothingAccumulateSample(rcSmoothingFilter_t *smoothing
 
 // Determine if we need to caclulate filter cutoffs. If not then we can avoid
 // examining the rx frame times completely
-FAST_CODE_NOINLINE bool rcSmoothingAutoCalculate(void)
+O_FAST FLASH_CODE bool rcSmoothingAutoCalculate(void)
 {
     // if the input cutoff is 0 (auto) then we need to calculate cutoffs
     if (rcSmoothingData.inputCutoffSetting == 0) {
@@ -741,7 +741,7 @@ FAST_CODE void processRcCommand(void)
     isRxDataNew = false;
 }
 
-FAST_CODE_NOINLINE void updateRcCommands(void)
+O_FAST FLASH_CODE void updateRcCommands(void)
 {
     isRxDataNew = true;
 

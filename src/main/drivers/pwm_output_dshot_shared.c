@@ -195,7 +195,7 @@ static uint32_t decodeTelemetryPacket(uint32_t buffer[], uint32_t count)
 #endif
 
 #ifdef USE_DSHOT_TELEMETRY
-FAST_CODE_NOINLINE bool pwmStartDshotMotorUpdate(void)
+O_FAST FLASH_CODE bool pwmStartDshotMotorUpdate(void)
 {
     if (!useDshotTelemetry) {
         return true;

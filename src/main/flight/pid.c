@@ -372,7 +372,7 @@ STATIC_UNIT_TESTED float calcHorizonLevelStrength(void)
 // Use the FAST_CODE_NOINLINE directive to avoid this code from being inlined into ITCM RAM to avoid overflow.
 // The impact is possibly slightly slower performance on F7/H7 but they have more than enough
 // processing power that it should be a non-issue.
-STATIC_UNIT_TESTED FAST_CODE_NOINLINE float pidLevel(int axis, const pidProfile_t *pidProfile, const rollAndPitchTrims_t *angleTrim, float currentPidSetpoint) {
+STATIC_UNIT_TESTED O_FAST FLASH_CODE float pidLevel(int axis, const pidProfile_t *pidProfile, const rollAndPitchTrims_t *angleTrim, float currentPidSetpoint) {
     // calculate error angle and limit the angle to the max inclination
     // rcDeflection is in range [-1.0, 1.0]
     float angle = pidProfile->levelAngleLimit * getRcDeflection(axis);
@@ -486,7 +486,7 @@ int acroTrainerSign(float x)
 // Use the FAST_CODE_NOINLINE directive to avoid this code from being inlined into ITCM RAM. We accept the
 // performance decrease when Acro Trainer mode is active under the assumption that user is unlikely to be
 // expecting ultimate flight performance at very high loop rates when in this mode.
-static FAST_CODE_NOINLINE float applyAcroTrainer(int axis, const rollAndPitchTrims_t *angleTrim, float setPoint)
+static O_FAST FLASH_CODE float applyAcroTrainer(int axis, const rollAndPitchTrims_t *angleTrim, float setPoint)
 {
     float ret = setPoint;
 
@@ -731,7 +731,7 @@ float pidGetAirmodeThrottleOffset()
 // Use the FAST_CODE_NOINLINE directive to avoid this code from being inlined into ITCM RAM to avoid overflow.
 // The impact is possibly slightly slower performance on F7/H7 but they have more than enough
 // processing power that it should be a non-issue.
-static FAST_CODE_NOINLINE float applyLaunchControl(int axis, const rollAndPitchTrims_t *angleTrim)
+static O_FAST FLASH_CODE float applyLaunchControl(int axis, const rollAndPitchTrims_t *angleTrim)
 {
     float ret = 0.0f;
 
