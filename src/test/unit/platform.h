@@ -33,6 +33,8 @@
 #define SLOW_CODE
 #define FAST_DATA_ZERO_INIT
 #define FAST_DATA
+#define O_FAST
+#define O_SIZE
 
 #define PID_PROFILE_COUNT 3
 #define CONTROL_RATE_PROFILE_COUNT  6
