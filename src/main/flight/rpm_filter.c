@@ -162,7 +162,7 @@ float rpmFilterGyro(int axis, float value)
 
 FAST_DATA_ZERO_INIT static float motorFrequency[MAX_SUPPORTED_MOTORS];
 
-FAST_CODE_NOINLINE void rpmFilterUpdate()
+FAST_CODE(cpTASK_PID_CORE) NOINLINE void rpmFilterUpdate()
 {
     if (gyroFilter == NULL) {
         return;

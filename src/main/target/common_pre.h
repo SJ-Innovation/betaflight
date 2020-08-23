@@ -155,17 +155,39 @@
 #error "ITCM and CCM are mutually exclusive. F3 has Instruction CCM, F7 has ITCM. F4 CCM is data only."
 #endif
 
+// Definitions for code-priorities used for determining if/which cache memory
+// a fast code section should end up in
+
+#define cpTASK_PID_CORE 0
+#define cpTASK_PID_COREPLUS 1
+
+#define cpTASK_GYRO_CORE 0
+#define cpTASK_GYRO_COREPLUS 1
+
+#define cpSUBTASK_xSHOT_CORE 0
+#define cpSUBTASK_xSHOT_COREPLUS 1
+
+#define cpFILTERS 0
+
+#define cpTASK_RC 1
+
 #if defined(USE_ITCM)
 #define TCM_CODE                __attribute__((section(".tcm_code")))
-#define FAST_CODE               O_FAST TCM_CODE
+#define FAST_CODE_0             O_FAST TCM_CODE   // ITCM is tiny, so only the highest priority should use it
+#define FAST_CODE_1             O_FAST            // We have nowhere else to put this.
 #elif defined(USE_CCM)
 #define CCM_CODE                __attribute__((section(".ccm_code")))
-#define FAST_CODE               O_FAST CCM_CODE
+#define FAST_CODE_0             O_FAST CCM_CODE   // CCM is larger than ITCM, so both priorities can use it
+#define FAST_CODE_1             O_FAST CCM_CODE
 #else
-#define FAST_CODE               O_FAST
+#define FAST_CODE(priority)     O_FAST    // Default for if there is no cache memory to use
 #endif
 
-#define FAST_CODE_NOINLINE      FAST_CODE NOINLINE
+#ifndef FAST_CODE
+// Defines the priority switching macro for fast code location
+#define _FAST_CODE(p)           FAST_CODE_ ## p
+#define FAST_CODE(priority)     _FAST_CODE(priority)
+#endif
 
 #define FLASH_CODE              __attribute__((section(".text")))
 #define SLOW_CODE               O_SIZE FLASH_CODE

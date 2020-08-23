@@ -27,8 +27,7 @@
 #define U_ID_2 2
 
 #define NOINLINE
-#define FAST_CODE
-#define FAST_CODE_NOINLINE
+#define FAST_CODE(priority)
 #define FLASH_CODE
 #define SLOW_CODE
 #define FAST_DATA_ZERO_INIT

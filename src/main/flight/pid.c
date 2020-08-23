@@ -599,7 +599,7 @@ STATIC_UNIT_TESTED void rotateItermAndAxisError()
 }
 
 #ifdef USE_RC_SMOOTHING_FILTER
-float FAST_CODE applyRcSmoothingDerivativeFilter(int axis, float pidSetpointDelta)
+float FAST_CODE(cpTASK_PID_CORE) applyRcSmoothingDerivativeFilter(int axis, float pidSetpointDelta)
 {
     float ret = pidSetpointDelta;
     if (axis == pidRuntime.rcSmoothingDebugAxis) {
@@ -768,7 +768,7 @@ static O_FAST FLASH_CODE float applyLaunchControl(int axis, const rollAndPitchTr
 
 // Betaflight pid controller, which will be maintained in the future with additional features specialised for current (mini) multirotor usage.
 // Based on 2DOF reference design (matlab)
-void FAST_CODE pidController(const pidProfile_t *pidProfile, timeUs_t currentTimeUs)
+void FAST_CODE(cpTASK_PID_CORE) pidController(const pidProfile_t *pidProfile, timeUs_t currentTimeUs)
 {
     static float previousGyroRateDterm[XYZ_AXIS_COUNT];
 #ifdef USE_INTERPOLATED_SP
